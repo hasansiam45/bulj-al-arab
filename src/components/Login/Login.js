@@ -25,6 +25,7 @@ const Login = () => {
         const { displayName, email } = result.user;
         const signedInUser = { name: displayName, email };
         setLoggedInUser(signedInUser);
+        storeAuthToken();
         history.replace(from);
 
     }).catch((error) => {
@@ -35,6 +36,20 @@ const Login = () => {
         var credential = error.credential;
     });
     }
+    
+    const storeAuthToken = () => {
+
+        firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+         // Send token to your backend via HTTPS
+         // ...
+            sessionStorage.setItem('token',idToken)
+            
+        }).catch(function(error) {
+         // Handle error
+});
+    }
+
+
     return (
         <div style={{textAlign: 'center'}}>
             <h1>Who are you?</h1>
